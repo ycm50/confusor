@@ -9,7 +9,7 @@ const str = "/";
 const lastVisitProxyCookie = "__PROXY_VISITEDSITE__";
 const passwordCookieName = "__PROXY_PWD__";
 const proxyHintCookieName = "__PROXY_HINT__";
-const password = "";
+const password = "ycm371523";
 const showPasswordPage = true;
 const replaceUrlObj = "__location____"
 var thisProxyServerUrlHttps;
