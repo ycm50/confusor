@@ -5,7 +5,7 @@ let a0_0x1b8029 = a0_0x4a6d13[Math['floor'](Math['random']() * a0_0x4a6d13['leng
   a0_0x540d61 = a0_0x1b8029['includes'](':') ? a0_0x1b8029['split'](':')[0x1] : '443',
   a0_0x20f603 = '',
   a0_0x270c07 = false;
-if (!a0_0x15259b(a0_0xaa7123)) throw new Error('uuid is not valid');
+if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i['test']('d342d11e-d424-4583-b36e-524ab1f0afa4')) throw new Error('uuid is not valid');
 let a0_0x11b54a = {},
   a0_0x51ca75 = false;
 export default {
@@ -92,11 +92,6 @@ async function a0_0x270434(_0x91f67) {
   let _0x38fc4a = _0x36f80e;
   _0x13e81a['pipeTo'](new WritableStream({
     async 'write'(_0x1f6f0f, _0x592764) {
-      if (_0x38fc4a['value']) {
-        const _0x4bcb43 = _0x38fc4a['value']['writable']['getWriter']();
-        await _0x4bcb43['write'](_0x1f6f0f), _0x4bcb43['releaseLock']();
-        return;
-      }
       const {
         hasError: _0x5cb613,
         message: _0x52e9da,
@@ -292,10 +287,6 @@ function a0_0x1a0ee3(_0x9bf15e) {
     return _0x148f57['earlyData'] = null, _0x148f57['error'] = _0x5ce029, _0x148f57;
   }
 }
-function a0_0x15259b(_0x2568e0) {
-  const _0x21d732 = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  return _0x21d732['test'](_0x2568e0);
-}
 const a0_0x4a2ffa = 0x1,
   a0_0x189d16 = 0x2;
 function a0_0x767ee6(_0x52e4ed) {
@@ -315,19 +306,18 @@ function a0_0x751fec(_0x4f1c09, _0x1e43dd = 0x0) {
 }
 function a0_0x367045(_0x3c9be3, _0x575ad8 = 0x0) {
   const _0x1c8bc9 = a0_0x751fec(_0x3c9be3, _0x575ad8);
-  if (!a0_0x15259b(_0x1c8bc9)) {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i['test'](_0x1c8bc9)) {
     throw new TypeError('Stringified UUID is invalid');
   }
   return _0x1c8bc9;
 }
 async function a0_0x23a0d6(_0x41347c, _0x75be6, _0x45c45e, _0x6b27aa) {
   try {
-    const _0xf36464 = '8.8.4.4';
     let _0x35235b = _0x45c45e;
     const _0x46eb7e = {};
-    _0x46eb7e['hostname'] = _0xf36464, _0x46eb7e['port'] = 0x35;
+    _0x46eb7e['hostname'] = '8.8.4.4', _0x46eb7e['port'] = 0x35;
     const _0x1ddfc4 = connect(_0x46eb7e);
-    _0x6b27aa('connected to ' + _0xf36464 + ':' + 0x35);
+    _0x6b27aa('connected to 8.8.4.4:53');
     const _0x417bef = _0x1ddfc4['writable']['getWriter']();
     await _0x417bef['write'](_0x41347c), _0x417bef['releaseLock'](), await _0x1ddfc4['readable']['pipeTo'](new WritableStream({
       async 'write'(_0x42ac09) {
@@ -340,10 +330,10 @@ async function a0_0x23a0d6(_0x41347c, _0x75be6, _0x45c45e, _0x6b27aa) {
         }
       },
       'close'() {
-        _0x6b27aa('dns server(' + _0xf36464 + ') tcp is close');
+        _0x6b27aa('dns server(8.8.4.4) tcp is close');
       },
       'abort'(_0x20eb0f) {
-        console['error']('dns server(' + _0xf36464 + ') tcp is abort', _0x20eb0f);
+        console['error']('dns server(8.8.4.4) tcp is abort', _0x20eb0f);
       }
     }));
   } catch (_0x5cc82f) {
@@ -427,8 +417,7 @@ function a0_0x8a68c6(_0x2d898f) {
   _0x2b7581 = Number(_0x52df60.pop());
   if (isNaN(_0x2b7581)) throw new Error('Invalid SOCKS address format');
   _0x4e6bf3 = _0x52df60['join'](':');
-  const _0xa5802f = /^\[.*\]$/;
-  if (_0x4e6bf3['includes'](':') && !_0xa5802f['test'](_0x4e6bf3)) throw new Error('Invalid SOCKS address format');
+  if (_0x4e6bf3['includes'](':') && !/^\[.*\]$/['test'](_0x4e6bf3)) throw new Error('Invalid SOCKS address format');
   const _0x1bbcb0 = {};
   return _0x1bbcb0['username'] = _0x1a1888, _0x1bbcb0['password'] = _0x5ef25d, _0x1bbcb0['hostname'] = _0x4e6bf3, _0x1bbcb0['port'] = _0x2b7581, _0x1bbcb0;
 }
@@ -444,11 +433,11 @@ function a0_0x46c440(_0x2b8edf, _0x102d7c, _0x4e8aa3) {
     _0x21353a = '\n  <head>\n    <title>EDtunnel: Configuration</title>\n    <meta name=\'viewport\' content=\'width=device-width, initial-scale=1\'>\n    <meta property=\'og:site_name\' content=\'EDtunnel: Protocol Configuration\' />\n    <meta property=\'og:type\' content=\'website\' />\n    <meta property=\'og:title\' content=\'EDtunnel - Protocol Configuration and Subscribe Output\' />\n    <meta property=\'og:description\' content=\'Use Cloudflare Pages and Worker serverless to implement protocol\' />\n    <meta property=\'og:url\' content=\'https://' + _0x102d7c + '/\' />\n    <meta property=\'og:image\' content=\'https://cdn.jsdelivr.net/gh/6Kmfi6HP/EDtunnel@refs/heads/main/image/logo.png\' />\n    <meta name=\'twitter:card\' content=\'summary_large_image\' />\n    <meta name=\'twitter:title\' content=\'EDtunnel - Protocol Configuration and Subscribe Output\' />\n    <meta name=\'twitter:description\' content=\'Use Cloudflare Pages and Worker serverless to implement protocol\' />\n    <meta name=\'twitter:url\' content=\'https://' + _0x102d7c + '/\' />\n    <meta name=\'twitter:image\' content=\'https://cdn.jsdelivr.net/gh/6Kmfi6HP/EDtunnel@refs/heads/main/image/logo.png\' />\n    <meta property=\'og:image:width\' content=\'1500\' />\n    <meta property=\'og:image:height\' content=\'1500\' />\n\n    <style>\n      body {\n        font-family: \'Roboto\', \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif;\n        background-color: #000000;\n        color: #ffffff;\n        line-height: 1.6;\n        padding: 20px;\n        max-width: 1200px;\n        margin: 0 auto;\n      }\n      .container {\n        background-color: #111111;\n        border-radius: 8px;\n        box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);\n        padding: 20px;\n        margin-bottom: 20px;\n      }\n      h1, h2 {\n        color: #ffffff;\n      }\n      .config-item {\n        background-color: #222222;\n        border: 1px solid #333333;\n        border-radius: 4px;\n        padding: 15px;\n        margin-bottom: 15px;\n      }\n      .config-item h3 {\n        margin-top: 0;\n        color: #ffffff;\n      }\n      .btn {\n        background-color: #ffffff;\n        color: #000000;\n        border: none;\n        padding: 10px 15px;\n        border-radius: 4px;\n        cursor: pointer;\n        transition: background-color 0.3s, color 0.3s;\n      }\n      .btn:hover {\n        background-color: #cccccc;\n      }\n      .btn-group {\n        margin-top: 10px;\n      }\n      .btn-group .btn {\n        margin-right: 10px;\n      }\n      pre {\n        background-color: #333333;\n        border: 1px solid #444444;\n        border-radius: 4px;\n        padding: 10px;\n        white-space: pre-wrap;\n        word-wrap: break-word;\n        color: #00ff00;\n      }\n      .logo {\n        float: left;\n        margin-right: 20px;\n        margin-bottom: 20px;\n\t\tmax-width: 30%;\n      }\n      @media (max-width: 768px) {\n        .logo {\n          float: none;\n          display: block;\n          margin: 0 auto 20px;\n          max-width: 90%; /* Adjust the max-width to fit within the container */\n        }\n        .btn-group {\n          display: flex;\n          flex-direction: column;\n          align-items: center;\n        }\n        .btn-group .btn {\n          margin-bottom: 10px;\n          width: 100%;\n          text-align: center;\n        }\n      }\n      .code-container {\n        position: relative;\n        margin-bottom: 15px;\n      }\n      .code-container pre {\n        margin: 0;\n        padding-right: 100px; /* Make space for the button */\n      }\n      .copy-btn {\n        position: absolute;\n        top: 5px;\n        right: 5px;\n        padding: 5px 10px;\n        font-size: 0.8em;\n      }\n      .subscription-info {\n        margin-top: 20px;\n        background-color: #222222;\n        border-radius: 4px;\n        padding: 15px;\n      }\n      .subscription-info h3 {\n        color: #ffffff;\n        margin-top: 0;\n      }\n      .subscription-info ul {\n        padding-left: 20px;\n      }\n      .subscription-info li {\n        margin-bottom: 10px;\n      }\n    </style>\n    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">\n  </head>\n  ',
     _0x59fdea = '\n    <div class="container">\n      <h1>EDtunnel: Protocol Configuration</h1>\n      <img src="https://cdn.jsdelivr.net/gh/6Kmfi6HP/EDtunnel@refs/heads/main/image/logo.png" alt="EDtunnel Logo" class="logo">\n      <p>Welcome! This function generates configuration for the vless protocol. If you found this useful, please check our GitHub project:</p>\n      <p><a href="https://github.com/6Kmfi6HP/EDtunnel" target="_blank" style="color: #00ff00;">EDtunnel - https://github.com/6Kmfi6HP/EDtunnel</a></p>\n      <div style="clear: both;"></div>\n      <div class="btn-group">\n        <a href="//' + _0x102d7c + '/sub/' + _0x3fae84[0x0] + '" class="btn" target="_blank"><i class="fas fa-link"></i> VLESS Subscription</a>\n        <a href="clash://install-config?url=' + encodeURIComponent('https://' + _0x102d7c + '/sub/' + _0x3fae84[0x0] + '?format=clash') + '" class="btn" target="_blank"><i class="fas fa-bolt"></i> Clash Subscription</a>\n        <a href="' + _0x232b51 + '" class="btn" target="_blank"><i class="fas fa-bolt"></i> Clash Link</a>\n        <a href="' + _0x5cec03 + '" class="btn" target="_blank"><i class="fas fa-star"></i> Best IP Subscription</a>\n      </div>\n      <div class="subscription-info">\n        <h3>Options Explained:</h3>\n        <ul>\n          <li><strong>VLESS Subscription:</strong> Direct link for VLESS protocol configuration. Suitable for clients supporting VLESS.</li>\n          <li><strong>Clash Subscription:</strong> Opens the Clash client with pre-configured settings. Best for Clash users on mobile devices.</li>\n          <li><strong>Clash Link:</strong> A web link to convert the VLESS config to Clash format. Useful for manual import or troubleshooting.</li>\n          <li><strong>Best IP Subscription:</strong> Provides a curated list of optimal server IPs for many <b>different countries</b>.</li>\n        </ul>\n        <p>Choose the option that best fits your client and needs. For most users, the VLESS or Clash Subscription will be the easiest to use.</p>\n      </div>\n    </div>\n  ',
     _0x6169cd = _0x3fae84['map'](_0x565d80 => {
-      const _0x3d92b1 = atob(a0_0x24e546) + '://' + _0x565d80 + atob(a0_0xc3176b) + _0x102d7c + ':443' + _0x499255,
-        _0x12ad1d = atob(a0_0x24e546) + '://' + _0x565d80 + atob(a0_0xc3176b) + _0x4e8aa3[0x0]['split'](':')[0x0] + ':' + a0_0x540d61 + _0x499255;
+      const _0x3d92b1 = 'vless://' + _0x565d80 + '@' + _0x102d7c + ':443' + _0x499255,
+        _0x12ad1d = 'vless://' + _0x565d80 + '@' + _0x4e8aa3[0x0]['split'](':')[0x0] + ':' + a0_0x540d61 + _0x499255;
       return '\n      <div class="container config-item">\n        <h2>UUID: ' + _0x565d80 + '</h2>\n        <h3>Default IP Configuration</h3>\n        <div class="code-container">\n          <pre><code>' + _0x3d92b1 + '</code></pre>\n          <button class="btn copy-btn" onclick=\'copyToClipboard("' + _0x3d92b1 + '")\'><i class="fas fa-copy"></i> Copy</button>\n        </div>\n        \n        <h3>Best IP Configuration</h3>\n        <div class="input-group mb-3">\n          <select class="form-select" id="proxySelect" onchange="updateProxyConfig()">\n            ' + (typeof _0x4e8aa3 === 'string' ? '<option value="' + _0x4e8aa3 + '">' + _0x4e8aa3 + '</option>' : Array['from'](_0x4e8aa3)['map'](_0x1203eb => '<option value="' + _0x1203eb + '">' + _0x1203eb + '</option>')['join']('')) + '\n          </select>\n        </div>\n\t\t<br>\n        <div class="code-container">\n          <pre><code id="proxyConfig">' + _0x12ad1d + '</code></pre>\n          <button class="btn copy-btn" onclick=\'copyToClipboard(document.getElementById("proxyConfig").textContent)\'><i class="fas fa-copy"></i> Copy</button>\n        </div>\n      </div>\n    ';
     })['join']('');
-  return '\n  <html>\n  ' + _0x21353a + '\n  <body>\n    ' + _0x59fdea + '\n    ' + _0x6169cd + '\n    <script>\n      const userIDArray = ' + JSON['stringify'](_0x3fae84) + ';\n      const pt = "' + a0_0x24e546 + '";\n      const at = "' + a0_0xc3176b + '";\n      const commonUrlPart = "?encryption=none&security=tls&sni=' + _0x102d7c + '&fp=randomized&type=ws&host=' + _0x102d7c + '&path=%2F%3Fed%3D2048#' + _0x102d7c + '";\n\n      function copyToClipboard(text) {\n        navigator.clipboard.writeText(text)\n          .then(() => {\n            alert("Copied to clipboard");\n          })\n          .catch((err) => {\n            console.error("Failed to copy to clipboard:", err);\n          });\n      }\n\n      function updateProxyConfig() {\n        const select = document.getElementById(\'proxySelect\');\n        const proxyValue = select.value;\n        const [host, port] = proxyValue.split(\':\');\n        const protocolSec = atob(pt) + \'://\' + userIDArray[0] + atob(at) + host + ":" + port + commonUrlPart;\n        document.getElementById("proxyConfig").textContent = protocolSec;\n      }\n    </script>\n  </body>\n  </html>';
+  return '\n  <html>\n  ' + _0x21353a + '\n  <body>\n    ' + _0x59fdea + '\n    ' + _0x6169cd + '\n    <script>\n      const userIDArray = ' + JSON['stringify'](_0x3fae84) + ';\n      const pt = "dmxlc3M=";\n      const at = "QA==";\n      const commonUrlPart = "?encryption=none&security=tls&sni=' + _0x102d7c + '&fp=randomized&type=ws&host=' + _0x102d7c + '&path=%2F%3Fed%3D2048#' + _0x102d7c + '";\n\n      function copyToClipboard(text) {\n        navigator.clipboard.writeText(text)\n          .then(() => {\n            alert("Copied to clipboard");\n          })\n          .catch((err) => {\n            console.error("Failed to copy to clipboard:", err);\n          });\n      }\n\n      function updateProxyConfig() {\n        const select = document.getElementById(\'proxySelect\');\n        const proxyValue = select.value;\n        const [host, port] = proxyValue.split(\':\');\n        const protocolSec = atob(pt) + \'://\' + userIDArray[0] + atob(at) + host + ":" + port + commonUrlPart;\n        document.getElementById("proxyConfig").textContent = protocolSec;\n      }\n    </script>\n  </body>\n  </html>';
 }
 const a0_0x115ac7 = new Set([0x50, 0x1f90, 0x22b0, 0x804, 0x826, 0x82f, 0x822]),
   a0_0x167a22 = new Set([0x1bb, 0x20fb, 0x805, 0x830, 0x827, 0x823]);
@@ -464,19 +453,19 @@ function a0_0x531d9d(_0x4203f2, _0xd3a277, _0x4a86d2) {
       return !_0xd3a277['includes']('pages.dev') && _0x26ce93['forEach'](_0x1a2653 => {
         Array['from'](a0_0x115ac7)['forEach'](_0x2e6e06 => {
           const _0xdb165e = _0xd3a277['split']('.')[0x0] + '-' + _0x1a2653 + '-HTTP-' + _0x2e6e06,
-            _0xef47ee = atob(a0_0x24e546) + '://' + _0x1cdd3f + atob(a0_0xc3176b) + _0x1a2653 + ':' + _0x2e6e06 + _0x2c1c8d + _0xdb165e;
+            _0xef47ee = 'vless://' + _0x1cdd3f + '@' + _0x1a2653 + ':' + _0x2e6e06 + _0x2c1c8d + _0xdb165e;
           _0x1643f5['push'](_0xef47ee);
         });
       }), _0x26ce93['forEach'](_0x37e652 => {
         Array['from'](a0_0x167a22)['forEach'](_0x348d36 => {
           const _0x2f97fa = _0xd3a277['split']('.')[0x0] + '-' + _0x37e652 + '-HTTPS-' + _0x348d36,
-            _0x21b0b1 = atob(a0_0x24e546) + '://' + _0x1cdd3f + atob(a0_0xc3176b) + _0x37e652 + ':' + _0x348d36 + _0xe78da2 + _0x2f97fa;
+            _0x21b0b1 = 'vless://' + _0x1cdd3f + '@' + _0x37e652 + ':' + _0x348d36 + _0xe78da2 + _0x2f97fa;
           _0x1643f5['push'](_0x21b0b1);
         });
       }), _0x4a997e['forEach'](_0x4a1db6 => {
         const [_0x51b443, _0x25ba2d = '443'] = _0x4a1db6['split'](':'),
           _0x336d2d = _0xd3a277['split']('.')[0x0] + '-' + _0x51b443 + '-HTTPS-' + _0x25ba2d,
-          _0x439f87 = atob(a0_0x24e546) + '://' + _0x1cdd3f + atob(a0_0xc3176b) + _0x51b443 + ':' + _0x25ba2d + _0xe78da2 + _0x336d2d + '-' + atob(a0_0x44216d);
+          _0x439f87 = 'vless://' + _0x1cdd3f + '@' + _0x51b443 + ':' + _0x25ba2d + _0xe78da2 + _0x336d2d + '-EDtunnel';
         _0x1643f5['push'](_0x439f87);
       }), _0x1643f5;
     });
