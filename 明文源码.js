@@ -1,14 +1,10 @@
 import { connect } from 'cloudflare:sockets';
 
-// 定义默认密码
-let passwd = '123456';
-
 export default {
   async fetch(request, env, _ctx) {
-    // 从环境变量中获取密码，如果没有则使用默认密码
-    passwd = env.PASSWD || passwd;
     const upgradeHeader = request.headers.get("Upgrade");
 
+    // 检查是否为 WebSocket 请求
     if (upgradeHeader !== "websocket") return new Response(null, { status: 404 });
 
     const [client, server] = Object.values(new WebSocketPair());
@@ -19,8 +15,14 @@ export default {
         // 解析客户端发送的 JSON 数据
         const { hostname, port, username, psw } = JSON.parse(data);
 
-        // 验证密码
-        if (passwd !== psw) throw 'Illegal-User';
+        // 从环境变量获取用户名和密码
+        const validUsername = env.USERNAME;
+        const validPassword = env.PASSWORD;
+
+        // 验证用户名和密码
+        if (validUsername !== username || validPassword !== psw) {
+          throw 'Illegal-User';
+        }
 
         // 创建到目标主机的 TCP 连接
         const socket = connect({ hostname, port });
@@ -35,7 +37,11 @@ export default {
         if (response[1] !== 0x00) throw 'SOCKS5 Authentication failed';
 
         // 发送连接请求
-        const connectRequest = new Uint8Array([0x05, 0x01, 0x00, 0x03, username.length, ...new TextEncoder().encode(username), ...new Uint8Array([port >> 8, port & 0xFF])]);
+        const connectRequest = new Uint8Array([
+          0x05, 0x01, 0x00, 0x03, username.length,
+          ...new TextEncoder().encode(username),
+          ...new Uint8Array([port >> 8, port & 0xFF])
+        ]);
         await socket.writable.getWriter().write(connectRequest);
 
         // 处理连接响应
@@ -60,6 +66,7 @@ export default {
           write(chunk) { server.send(chunk); }
         }));
       } catch (error) {
+        console.error(error);
         server.close();
       }
     }, { once: true });
