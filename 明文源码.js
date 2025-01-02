@@ -1,59 +1,101 @@
-import { connect } from 'cloudflare:sockets';
+// 把 Worker 名字改成实际版本
+const WORKER_HOSTNAME = " aa1.507475942.workers.dev"
 
-// 定义密码，用于验证客户端
-let passwd = '123456';
+let real_hostname = null
+let real_path = null
 
-export default {
+async function handleRequest(req) {
+  let parsedUrl = req.url
+  let referer = req.headers.get("Referer")
 
-  async fetch(request, env, _ctx) {
-    // 从环境变量中获取密码，如果没有则使用默认密码
-    passwd = env.PASSWD || passwd;
-    // 检查请求头中是否包含 WebSocket 升级请求
-    const upgradeHeader = request.headers.get("Upgrade");
+  // 如果有来自节点的 Referer，则修改以转发
+  if (referer != null) {
+      parsedUrl = referer.toString()
+  }
 
-    if (upgradeHeader !== "websocket") return new Response(null, { status: 404 });
+  // 截取真正的域名和路径
+  let first_char_index = parsedUrl.indexOf(WORKER_HOSTNAME) + WORKER_HOSTNAME.length + 1
+  let second_char_index = parsedUrl.indexOf('/', first_char_index + 1)
+  
+  if (second_char_index === -1) {
+    let attribute_index = parsedUrl.indexOf('?', first_char_index)
+    if (attribute_index === -1) { // URL 结尾没有 /，且没有 ? 开头的查询字符串
+      real_hostname = parsedUrl.substring(first_char_index)
+      real_path = ''
+    } else {  // 包含 ? 查询字符串
+      real_hostname = parsedUrl.substring(first_char_index, attribute_index)
+      real_path = parsedUrl.substring(attribute_index)
+    }
+  } else {  // URL 结尾有 ? /
+      real_hostname = parsedUrl.substring(first_char_index, second_char_index)
+      real_path = parsedUrl.substring(second_char_index)
+  }
 
-    // 创建 WebSocket 对，获取客户端和服务器端的 WebSocket 对象
-    const [client, server] = Object.values(new WebSocketPair());
+  console.log(real_hostname)
+  console.log(real_path)
 
-    // 接受 WebSocket 连接
-    server.accept();
+  const res = await fetch('https://' + real_hostname + real_path)
 
-    // 添加消息事件监听器，只触发一次
-    server.addEventListener('message', ({ data }) => {
-      try {
-        // 解析客户端发送的 JSON 数据
-        const { hostname, port, psw } = JSON.parse(data);
+  // 去除 nosniff
+  let clean_res = new Response(res.body, res)
+  clean_res.headers.delete("x-content-type-options")
+  
+  const Accept = req.headers.get("Accept") || ""
 
-        // 验证密码
-        if (passwd != psw) throw 'Illegal-User';
-
-        // 创建到目标主机的 TCP 连接
-        const socket = connect({ hostname, port });
-
-        // 创建一个 ReadableStream，将 WebSocket 数据传输到 TCP 连接
-        new ReadableStream({
-          start(controller) {
-            // 设置 WebSocket 事件处理器
-            server.onmessage = ({ data }) => controller.enqueue(data);
-            server.onerror = e => controller.error(e);
-            server.onclose = e => controller.close(e);
-          },
-          cancel(reason) { server.close(); }
-        }).pipeTo(socket.writable);
-
-        // 创建一个 WritableStream，将 TCP 连接数据传输到 WebSocket
-        socket.readable.pipeTo(new WritableStream({
-          start(controller) { server.onerror = e => controller.error(e); },
-          write(chunk) { server.send(chunk); }
-        }));
-      } catch (error) {
-        // 如果发生错误，关闭 WebSocket 连接
-        server.close();
+  // 如果请求头 Accept 包含 text/css，则不交给 HTMLRewriter
+  if (Accept.toString().indexOf("text/css") != -1) {
+      const contentType = clean_res.headers.get("content-type") || ""
+      if (contentType.toString().includes("text/javascript")) {
+          let css_res = new Response(clean_res.body, clean_res)
+          css_res.headers.set("content-type", contentType.replace("text/javascript", "text/css"))
+          return css_res
       }
-    }, { once: true });
 
-    // 返回 WebSocket 升级响应
-    return new Response(null, { status: 101, webSocket: client });
+      clean_res.headers.set("content-type", "text/css; charset=utf-8")
+      return clean_res
+  }
+
+  return rewriter.transform(clean_res)
+}
+
+class AttributeRewriter {
+  constructor(attributeName) {
+    this.attributeName = attributeName
+  }
+  element(element) {
+    const attribute = element.getAttribute(this.attributeName)
+    if (attribute == null) {
+
+    } else if (attribute.startsWith('https://')) {
+        element.setAttribute(
+            this.attributeName,
+            attribute.replace(attribute, 'https://' + WORKER_HOSTNAME + '/' + attribute.substring(8))
+        )
+    } else if (attribute.startsWith('//')) {
+        element.setAttribute(
+            this.attributeName,
+            attribute.replace(attribute, '//' + WORKER_HOSTNAME + '/' + attribute.substring(2))
+        )
+    } else if (attribute.startsWith('/')) {
+      element.setAttribute(
+        this.attributeName,
+        attribute.replace(attribute, '/' + real_hostname + attribute)
+      )
+    } else if (!attribute.startsWith('/') && attribute.indexOf('/') != 0) {
+      element.setAttribute(
+        this.attributeName,
+        attribute.replace(attribute, '/' + real_hostname + '/' + attribute)
+      )
+    }
   }
 }
+
+const rewriter = new HTMLRewriter()
+  .on("a", new AttributeRewriter("href"))
+  .on("img", new AttributeRewriter("src"))
+  .on("link", new AttributeRewriter("href"))
+  .on("script", new AttributeRewriter("src"))
+
+addEventListener("fetch", event => {
+  event.respondWith(handleRequest(event.request))
+})
