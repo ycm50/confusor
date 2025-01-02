@@ -1,5 +1,5 @@
 // 把 Worker 名字改成实际版本
-const WORKER_HOSTNAME = " aa1.507475942.workers.dev"
+const WORKER_HOSTNAME = "aa1.507475942.workers.dev"
 
 let real_hostname = null
 let real_path = null
